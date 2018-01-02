@@ -70,8 +70,11 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 if (results.values != null) {
                     data = (ArrayList<String>) results.values;
-                    notifyDataSetChanged();
                 }
+                else {
+                    data = new ArrayList<String>();
+                }
+                notifyDataSetChanged();
             }
         };
         return filter;
@@ -114,6 +117,11 @@ public class SearchAdapter extends BaseAdapter implements Filterable {
         }
 
         return convertView;
+    }
+
+    public void clearData() {
+        data = new ArrayList<String>();
+        notifyDataSetChanged();
     }
 
     private class SuggestionsViewHolder {

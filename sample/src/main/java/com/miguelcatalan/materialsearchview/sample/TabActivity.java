@@ -53,6 +53,11 @@ public class TabActivity extends AppCompatActivity {
                 //Do some magic
                 return false;
             }
+
+            @Override
+            public boolean onQueryClear() {
+                return false;
+            }
         });
 
         searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {

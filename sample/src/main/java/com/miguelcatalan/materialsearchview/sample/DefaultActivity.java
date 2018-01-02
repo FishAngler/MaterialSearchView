@@ -11,12 +11,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import com.miguelcatalan.materialsearchview.SearchAdapter;
 
 import java.util.ArrayList;
 
 public class DefaultActivity extends AppCompatActivity {
 
     private MaterialSearchView searchView;
+    private SearchAdapter searchAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,11 +28,12 @@ public class DefaultActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        searchAdapter = new SearchAdapter(this, getResources().getStringArray(R.array.query_suggestions), null, true);
+
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
         searchView.setVoiceSearch(false);
         searchView.setCursorDrawable(R.drawable.custom_cursor);
-        searchView.setEllipsize(true);
-        searchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
+        searchView.setAdapter(searchAdapter);
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -44,12 +47,18 @@ public class DefaultActivity extends AppCompatActivity {
                 //Do some magic
                 return false;
             }
+
+            @Override
+            public boolean onQueryClear() {
+                searchAdapter.clearData();
+                return false;
+            }
         });
 
         searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
             public void onSearchViewShown() {
-                //Do some magic
+                searchAdapter.clearData();
             }
 
             @Override
