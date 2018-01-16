@@ -29,6 +29,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -224,7 +225,10 @@ public class MaterialSearchView extends FrameLayout implements Filter.FilterList
 
         public void onClick(View v) {
             if (v == mBackBtn) {
-                if (mLastSearchTerm.length() == 0 || (TextUtils.equals(mSearchSrcTextView.getText(), mLastSearchTerm) && mSuggestionsListView.getVisibility() == GONE)) {
+                if (mLastSearchTerm.length() == 0 ||
+                    (TextUtils.equals(mSearchSrcTextView.getText(), mLastSearchTerm) && mSuggestionsListView.getVisibility() == GONE) ||
+                     mAdapter == null) {
+
                     mSearchSrcTextView.setText(null);
                     closeSearch();
                 }
@@ -239,7 +243,7 @@ public class MaterialSearchView extends FrameLayout implements Filter.FilterList
             } else if (v == mEmptyBtn) {
                 clearSearch();
                 mSearchSrcTextView.setText(null);
-            } else if (v == mSearchSrcTextView) {
+            } else if (v == mSearchSrcTextView && mAdapter != null) {
                 showSuggestions();
             }
         }
@@ -424,6 +428,11 @@ public class MaterialSearchView extends FrameLayout implements Filter.FilterList
      */
     public void setAdapter(ListAdapter adapter) {
         mAdapter = adapter;
+
+        if (mAdapter != null) {
+            mSearchLayout.getLayoutParams().height = LayoutParams.MATCH_PARENT;
+        }
+
         mSuggestionsListView.setAdapter(adapter);
         startFilter(mSearchSrcTextView.getText());
     }
