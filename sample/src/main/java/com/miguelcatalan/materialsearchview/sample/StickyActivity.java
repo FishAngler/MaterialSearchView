@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
@@ -53,6 +54,11 @@ public class StickyActivity extends AppCompatActivity {
             @Override
             public void onSearchViewClosed() {
                 //Do some magic
+            }
+
+            @Override
+            public void onSubmitButtonClicked() {
+                Toast.makeText(StickyActivity.this, "Clicked forward!", Toast.LENGTH_LONG);
             }
         });
     }

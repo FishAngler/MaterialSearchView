@@ -57,6 +57,7 @@ public class MaterialSearchView extends FrameLayout implements Filter.FilterList
     private ImageButton mBackBtn;
     private ImageButton mVoiceBtn;
     private ImageButton mEmptyBtn;
+    private ImageButton mSubmitBtn;
     private RelativeLayout mSearchTopBar;
 
     private CharSequence mOldQueryText;
@@ -69,6 +70,7 @@ public class MaterialSearchView extends FrameLayout implements Filter.FilterList
 
     private SavedState mSavedState;
     private boolean submit = false;
+    private boolean useSubmitButton = false;
 
     private boolean ellipsize = false;
 
@@ -149,6 +151,7 @@ public class MaterialSearchView extends FrameLayout implements Filter.FilterList
         mBackBtn = (ImageButton) mSearchLayout.findViewById(R.id.action_up_btn);
         mVoiceBtn = (ImageButton) mSearchLayout.findViewById(R.id.action_voice_btn);
         mEmptyBtn = (ImageButton) mSearchLayout.findViewById(R.id.action_empty_btn);
+        mSubmitBtn = (ImageButton) mSearchLayout.findViewById(R.id.action_submit_btn);
         mTintView = mSearchLayout.findViewById(R.id.transparent_view);
 
         mSearchSrcTextView.setOnClickListener(mOnClickListener);
@@ -156,6 +159,7 @@ public class MaterialSearchView extends FrameLayout implements Filter.FilterList
         mVoiceBtn.setOnClickListener(mOnClickListener);
         mEmptyBtn.setOnClickListener(mOnClickListener);
         mTintView.setOnClickListener(mOnClickListener);
+        mSubmitBtn.setOnClickListener(mOnClickListener);
 
         allowVoiceSearch = false;
 
@@ -225,6 +229,10 @@ public class MaterialSearchView extends FrameLayout implements Filter.FilterList
                 showSuggestions();
             } else if (v == mTintView) {
                 closeSearch();
+            } else if (v == mSubmitBtn) {
+                if (mSearchViewListener != null) {
+                    mSearchViewListener.onSubmitButtonClicked();
+                }
             }
         }
     };
@@ -527,6 +535,12 @@ public class MaterialSearchView extends FrameLayout implements Filter.FilterList
         mIsSearchOpen = true;
     }
 
+    public void setUseSubmitButton(boolean useSubmitButton) {
+        this.mSubmitBtn.setVisibility(useSubmitButton ? VISIBLE : GONE);
+        int paddingRight = useSubmitButton ? 0 : (int) getResources().getDimension(R.dimen.search_icon_padding);
+        this.mEmptyBtn.setPadding(0, 0, paddingRight, 0);
+    }
+
     private void setVisibleWithAnimation() {
         AnimationUtil.AnimationListener animationListener = new AnimationUtil.AnimationListener() {
             @Override
@@ -722,7 +736,7 @@ public class MaterialSearchView extends FrameLayout implements Filter.FilterList
         void onSearchViewShown();
 
         void onSearchViewClosed();
+
+        void onSubmitButtonClicked();
     }
-
-
 }

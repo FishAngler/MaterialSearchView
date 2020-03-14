@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
@@ -30,6 +31,7 @@ public class DefaultActivity extends AppCompatActivity {
         searchView.setVoiceSearch(false);
         searchView.setCursorDrawable(R.drawable.custom_cursor);
         searchView.setEllipsize(true);
+        searchView.setUseSubmitButton(true);
         searchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
@@ -55,6 +57,11 @@ public class DefaultActivity extends AppCompatActivity {
             @Override
             public void onSearchViewClosed() {
                 //Do some magic
+            }
+
+            @Override
+            public void onSubmitButtonClicked() {
+                Toast.makeText(DefaultActivity.this, "Clicked forward!", Toast.LENGTH_LONG).show();
             }
         });
     }
